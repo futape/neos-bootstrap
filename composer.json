@@ -1,0 +1,11 @@
+{
+    "name": "futape/neos-bootstrap",
+    "type": "neos-plugin",
+    "authors": [
+        {
+            "name": "Lucas Krause",
+            "email": "dev@futape.de"
+        }
+    ],
+    "require": {}
+}
