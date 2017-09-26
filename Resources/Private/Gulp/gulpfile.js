@@ -11,44 +11,49 @@ var path = require('path'),
 	pump = require('pump');
 
 var config = {
-		src: {
-			scss: [
-				'../Styles/main.scss'
-			],
-			js: [
-				'../Javascript/jQuery/jquery-3.2.1.js',
-				'../Javascript/Popper/popper.js',
-				'../Javascript/Futape/bootstrapHeader.js',
-				'../Javascript/Bootstrap/util.js',
-				'../Javascript/Bootstrap/alert.js',
-				'../Javascript/Bootstrap/button.js',
-				'../Javascript/Bootstrap/carousel.js',
-				'../Javascript/Bootstrap/collapse.js',
-				'../Javascript/Bootstrap/dropdown.js',
-				'../Javascript/Bootstrap/modal.js',
-				'../Javascript/Bootstrap/scrollspy.js',
-				'../Javascript/Bootstrap/tab.js',
-				'../Javascript/Bootstrap/tooltip.js',
-				'../Javascript/Bootstrap/popover.js',
-				'../Javascript/Futape/bootstrapFooter.js',
-			]
-		},
-		dest: {
-			css: '../../Public/Styles/',
-			js: {
-				dir: '../../Public/Javascript/',
-				file: 'main.js'
-			}
-		},
-		watch: {
-			scss: [
-				'../Styles/**/*.scss'
-			],
-			js: [
-				'../Javascript/**/*.js'
-			]
+	dir: {
+		bootstrap: {
+			js: '../../../../../Libraries/twbs/bootstrap/js/src/'
 		}
-	};
+	},
+	src: {
+		scss: [
+			'../Styles/main.scss'
+		]
+	},
+	dest: {
+		css: '../../Public/Styles/',
+		js: {
+			dir: '../../Public/Javascript/',
+			file: 'main.js'
+		}
+	},
+	watch: {
+		scss: [
+			'../Styles/**/*.scss'
+		],
+		js: [
+			'../Javascript/**/*.js'
+		]
+	}
+};
+config.src.js = [
+	'../Javascript/jQuery/jquery-3.2.1.js',
+	'../Javascript/Popper/popper.js',
+	'../Javascript/Futape/bootstrapHeader.js',
+	path.join(config.dir.bootstrap.js, 'util.js'),
+	path.join(config.dir.bootstrap.js, 'alert.js'),
+	path.join(config.dir.bootstrap.js, 'button.js'),
+	path.join(config.dir.bootstrap.js, 'carousel.js'),
+	path.join(config.dir.bootstrap.js, 'collapse.js'),
+	path.join(config.dir.bootstrap.js, 'dropdown.js'),
+	path.join(config.dir.bootstrap.js, 'modal.js'),
+	path.join(config.dir.bootstrap.js, 'scrollspy.js'),
+	path.join(config.dir.bootstrap.js, 'tab.js'),
+	path.join(config.dir.bootstrap.js, 'tooltip.js'),
+	path.join(config.dir.bootstrap.js, 'popover.js'),
+	'../Javascript/Futape/bootstrapFooter.js',
+];
 
 gulp.task('clean:css', function() {
 	return del(path.join(config.dest.css, '*'), {
