@@ -1,0 +1,24 @@
+prototype(Futape.Bootstrap:Figure) < prototype(Neos.Neos:Content) {
+	templatePath = 'resource://Futape.Bootstrap/Private/Fusion/Figure/Figure.html'
+
+	attributes {
+		class.@process.addFigureClasses = ${Array.concat(Type.isArray(value) ? value : [value], ['figure'])}
+	}
+
+	content = ${null}
+	content {
+		prototype(Futape.Bootstrap:Image) {
+			attributes {
+				class.@process.addFigureClasses = ${Array.concat(Type.isArray(value) ? value : [value], ['figure-img'])}
+			}
+		}
+	}
+
+	caption = Neos.Fusion:Tag {
+		tagName = 'figcaption'
+		attributes {
+			class.@process.addFigureClasses = ${Array.concat(Type.isArray(value) ? value : [value], ['figure-caption'])}
+		}
+		content = ${null}
+	}
+}
