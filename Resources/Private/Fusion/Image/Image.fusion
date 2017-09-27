@@ -1,0 +1,30 @@
+prototype(Futape.Bootstrap:Image) < prototype(Neos.Neos:Content) {
+	templatePath = 'resource://Futape.Bootstrap/Private/Fusion/Image/Image.html'
+
+	# Valid values: thumbnail, rounded, normal
+	style = 'normal'
+	@context.style = ${this.style}
+
+	attributes {
+		src = ${null}
+		alt = ${null}
+		class.@process.addImageClasses = Neos.Fusion:Value {
+			classes = Neos.Fusion:RawArray {
+				0 = 'img-fluid'
+				1 = Neos.Fusion:Case {
+					thumbnail {
+						condition = ${style == 'thumbnail'}
+						renderer = 'img-thumbnail'
+					}
+
+					rounded {
+						condition = ${style == 'rounded'}
+						renderer = 'rounded'
+					}
+				}
+			}
+
+			value = ${Array.concat(Type.isArray(value) ? value : [value], this.classes)}
+		}
+	}
+}
