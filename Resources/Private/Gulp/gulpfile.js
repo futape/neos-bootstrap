@@ -4,9 +4,8 @@ var path = require('path'),
 	sourcemaps = require('gulp-sourcemaps'),
 	autoprefixer = require('gulp-autoprefixer'),
 	concat = require('gulp-concat-util'),
-	composer = require('gulp-uglify/composer'),
-	uglifyjs = require('uglify-es'),
-	uglify = composer(uglifyjs, console),
+	babel = require('gulp-babel'),
+	uglify = require('gulp-uglify'),
 	del = require('del'),
 	pump = require('pump');
 
@@ -55,6 +54,8 @@ config.src.js = [
 	'../Javascript/Futape/bootstrapFooter.js',
 ];
 
+// CSS tasks
+
 gulp.task('clean:css', function() {
 	return del(path.join(config.dest.css, '*'), {
 		force: true
@@ -70,7 +71,6 @@ gulp.task('sass:prod', ['clean:css'], function(cb) {
 		gulp.dest(config.dest.css)
 	], cb);
 });
-
 gulp.task('sass:dev', ['clean:css'], function(cb) {
 	pump([
 		gulp.src(config.src.scss),
@@ -88,7 +88,6 @@ gulp.task('autoprefix:prod', ['sass:prod'], function(cb) {
 		gulp.dest(config.dest.css)
 	], cb);
 });
-
 gulp.task('autoprefix:dev', ['sass:dev'], function(cb) {
 	pump([
 		gulp.src(path.join(config.dest.css, '*.css')),
@@ -100,6 +99,13 @@ gulp.task('autoprefix:dev', ['sass:dev'], function(cb) {
 		gulp.dest(config.dest.css)
 	], cb);
 });
+
+gulp.task('build:css:prod', ['sass:prod', 'autoprefix:prod']);
+gulp.task('build:css:dev', ['sass:dev', 'autoprefix:dev'], function() {
+	gulp.watch(config.watch.scss, ['sass:dev', 'autoprefix:dev']);
+});
+
+// JavaScript tasks
 
 gulp.task('clean:js', function() {
 	return del(path.join(config.dest.js.dir, '*'), {
@@ -118,17 +124,59 @@ gulp.task('concat:prod', ['clean:js'], function(cb) {
 		gulp.dest(config.dest.js.dir)
 	], cb);
 });
-
 gulp.task('concat:dev', ['clean:js'], function(cb) {
 	pump([
 		gulp.src(config.src.js),
-		sourcemaps.init({
-			loadMaps: true
-		}),
+		sourcemaps.init(),
 		concat(config.dest.js.file, {
 			process: function(src) {
 				return src.replace(/^(export|import).*/gm, '');
 			}
+		}),
+		sourcemaps.write('.'),
+		gulp.dest(config.dest.js.dir)
+	], cb);
+});
+
+gulp.task('babel:prod', ['concat:prod'], function(cb) {
+	pump([
+		gulp.src(path.join(config.dest.js.dir, '*.js')),
+		babel({
+			presets: [
+				[
+					require.resolve('babel-preset-es2015'),
+					{
+						loose: true,
+						modules: false
+					}
+				]
+			],
+			plugins: [
+				require.resolve('babel-plugin-transform-es2015-modules-strip')
+			]
+		}),
+		gulp.dest(config.dest.js.dir)
+	], cb);
+});
+gulp.task('babel:dev', ['concat:dev'], function(cb) {
+	pump([
+		gulp.src(path.join(config.dest.js.dir, '*.js')),
+		sourcemaps.init({
+			loadMaps: true
+		}),
+		babel({
+			presets: [
+				[
+					require.resolve('babel-preset-es2015'),
+					{
+						loose: true,
+						modules: false
+					}
+				]
+			],
+			plugins: [
+				require.resolve('babel-plugin-transform-es2015-modules-strip')
+			]
 		}),
 		sourcemaps.write('.'),
 		gulp.dest(config.dest.js.dir)
@@ -148,15 +196,12 @@ gulp.task('uglify:prod', ['concat:prod'], function(cb) {
 	], cb);
 });
 
-gulp.task('build:css:prod', ['sass:prod', 'autoprefix:prod']);
-gulp.task('build:css:dev', ['sass:dev', 'autoprefix:dev'], function() {
-	gulp.watch(config.watch.scss, ['sass:dev', 'autoprefix:dev']);
+gulp.task('build:js:prod', ['concat:prod', 'babel:prod', 'uglify:prod']);
+gulp.task('build:js:dev', ['concat:dev', 'babel:dev'], function() {
+	gulp.watch(config.watch.js, ['concat:dev', 'babel:dev']);
 });
 
-gulp.task('build:js:prod', ['concat:prod', 'uglify:prod']);
-gulp.task('build:js:dev', ['concat:dev'], function() {
-	gulp.watch(config.watch.js, ['concat:dev']);
-});
+// Compound tasks
 
 gulp.task('build:prod', ['build:css:prod', 'build:js:prod']);
 gulp.task('build:dev', ['build:css:dev', 'build:js:dev']);
