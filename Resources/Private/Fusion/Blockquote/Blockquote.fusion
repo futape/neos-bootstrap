@@ -1,0 +1,17 @@
+prototype(Futape.Bootstrap:Blockquote) < prototype(Neos.Neos:Content) {
+	templatePath = 'resource://Futape.Bootstrap/Private/Fusion/Blockquote/Blockquote.html'
+
+	attributes {
+		class.@process.addBlockquoteClasses = ${Array.concat(Type.isArray(value) ? value : [value], ['blockquote'])}
+	}
+
+	content = ${null}
+
+	footer = Neos.Fusion:Tag {
+		tagName = 'footer'
+		attributes {
+			class.@process.addBlockquoteClasses = ${Array.concat(Type.isArray(value) ? value : [value], ['blockquote-footer'])}
+		}
+		content = ${null}
+	}
+}
