@@ -1,7 +1,7 @@
 prototype(Futape.Bootstrap:Image) < prototype(Neos.Neos:Content) {
 	templatePath = 'resource://Futape.Bootstrap/Private/Fusion/Image/Image.html'
 
-	# Valid values: thumbnail, rounded, normal
+	# Valid values: normal, thumbnail
 	style = 'normal'
 	@context.style = ${this.style}
 
@@ -15,11 +15,6 @@ prototype(Futape.Bootstrap:Image) < prototype(Neos.Neos:Content) {
 					thumbnail {
 						condition = ${style == 'thumbnail'}
 						renderer = 'img-thumbnail'
-					}
-
-					rounded {
-						condition = ${style == 'rounded'}
-						renderer = 'rounded'
 					}
 				}
 			}
