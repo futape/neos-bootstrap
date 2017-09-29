@@ -1,0 +1,5 @@
+/Resources/Public/*
+!/Resources/Public/Javascript/
+/Resources/Public/Javascript/*
+!/Resources/Public/Styles/
+/Resources/Public/Styles/*
