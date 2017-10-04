@@ -1,0 +1,25 @@
+prototype(Futape.Bootstrap:TableHead) < prototype(Neos.Fusion:Tag) {
+	# Valid values: normal, default, inverse
+	color = 'normal'
+	@context.color = ${this.color}
+
+	tagName = 'thead'
+	attributes {
+		class.@process.addTableClasses = Neos.Fusion:Value {
+			classes = Neos.Fusion:RawArray {
+				0 = ${'thead-' + color}
+			}
+
+			value = ${Array.concat(Type.isArray(value) ? value : [value], this.classes)}
+
+			@if.notNormal = ${color != 'normal'}
+		}
+	}
+
+	content = ${null}
+	content {
+		prototype(Futape.Bootstrap:TableCell) {
+			tagName.@process.makeTableHeader = 'th'
+		}
+	}
+}

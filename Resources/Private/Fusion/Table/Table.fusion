@@ -1,0 +1,44 @@
+prototype(Futape.Bootstrap:Table) < prototype(Neos.Neos:Content) {
+	templatePath = 'resource://Futape.Bootstrap/Private/Fusion/Table/Table.html'
+
+	# Valid values: normal, inverse
+	color = 'normal'
+	@context.color = ${this.color}
+
+	# Valid values: normal, small
+	size = 'normal'
+	@context.size = ${this.size}
+
+	bordered = false
+	@context.bordered = ${this.bordered}
+
+	hoverable = false
+	@context.hoverable = ${this.hoverable}
+
+	attributes {
+		class.@process.addTableClasses = Neos.Fusion:Value {
+			classes = Neos.Fusion:RawArray {
+				0 = 'table'
+				1 = 'table-responsive'
+				2 = ${color != 'normal' ? 'table-' + color : null}
+				3 = Neos.Fusion:Case {
+					small {
+						condition = ${size == 'small'}
+						renderer = 'table-sm'
+					}
+				}
+				4 = ${bordered == true ? 'table-bordered' : null}
+				5 = ${hoverable == true ? 'table-hover' : null}
+			}
+
+			value = ${Array.concat(Type.isArray(value) ? value : [value], this.classes)}
+		}
+	}
+
+	head = Futape.Bootstrap:TableHead
+
+	body = Neos.Fusion:Tag {
+		tagName = 'tbody'
+		content = ${null}
+	}
+}
