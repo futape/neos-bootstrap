@@ -1,0 +1,5 @@
+'Futape.Bootstrap:BootstrapContentPrototype':
+  abstract: true
+  options:
+    fusion:
+      prototypeGenerator: 'Futape\Bootstrap\Generators\BootstrapContentPrototypeGenerator'

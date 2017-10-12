@@ -10,5 +10,10 @@
     "require": {
         "neos/neos": "^3.1.0",
     	"twbs/bootstrap": "4.0.0-beta"
+    },
+    "autoload": {
+        "psr-4": {
+            "Futape\\Bootstrap\\": "Classes"
+        }
     }
 }
