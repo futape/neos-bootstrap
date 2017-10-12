@@ -1,15 +1,22 @@
-prototype(Futape.Bootstrap:DisplayHeading) < prototype(Neos.Neos:Content) {
-	templatePath = 'resource://Futape.Bootstrap/Private/Fusion/DisplayHeading/DisplayHeading.html'
-
+prototype(Futape.Bootstrap:DisplayHeading) < prototype(Neos.Fusion:Value) {
 	# Valid values: 1-4
 	level = ${null}
 	@context.level = ${this.level}
 
 	tagName = 'div'
-
-	attributes {
-		class.@process.addDisplayHeadingClasses = ${Array.concat(Type.isArray(value) ? value : [value], ['display-' + level])}
-	}
+	@context.tagName = ${this.tagName}
 
 	content = ${null}
+	@context.content = ${this.content}
+
+	value = Neos.Fusion:Template {
+		templatePath = 'resource://Futape.Bootstrap/Private/Fusion/DisplayHeading/DisplayHeading.html'
+
+		attributes = Neos.Fusion:Attributes {
+			class.@process.addDisplayHeadingClasses = ${Array.concat(Type.isArray(value) ? value : [value], ['display-' + level])}
+		}
+
+		tagName = ${tagName}
+		content = ${content}
+	}
 }

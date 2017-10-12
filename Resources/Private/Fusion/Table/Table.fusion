@@ -1,6 +1,4 @@
-prototype(Futape.Bootstrap:Table) < prototype(Neos.Neos:Content) {
-	templatePath = 'resource://Futape.Bootstrap/Private/Fusion/Table/Table.html'
-
+prototype(Futape.Bootstrap:Table) < prototype(Neos.Fusion:Value) {
 	# Valid values: normal, inverse
 	color = 'normal'
 	@context.color = ${this.color}
@@ -18,30 +16,40 @@ prototype(Futape.Bootstrap:Table) < prototype(Neos.Neos:Content) {
 	responsive = false
 	@context.responsive = ${this.responsive}
 
-	attributes {
-		class.@process.addTableClasses = Neos.Fusion:Value {
-			classes = Neos.Fusion:RawArray {
-				0 = 'table'
-				1 = ${color != 'normal' ? 'table-' + color : null}
-				2 = Neos.Fusion:Case {
-					small {
-						condition = ${size == 'small'}
-						renderer = 'table-sm'
-					}
-				}
-				3 = ${bordered == true ? 'table-bordered' : null}
-				4 = ${hoverable == true ? 'table-hover' : null}
-				5 = ${responsive == true ? 'table-responsive' : null}
-			}
-
-			value = ${Array.concat(Type.isArray(value) ? value : [value], this.classes)}
-		}
-	}
-
 	head = Futape.Bootstrap:TableHead
+	@context.head = ${this.head}
 
-	body = Neos.Fusion:Tag {
-		tagName = 'tbody'
-		content = ${null}
+	body = ${null}
+	@context.body = ${this.body}
+
+	value = Neos.Fusion:Template {
+		templatePath = 'resource://Futape.Bootstrap/Private/Fusion/Table/Table.html'
+
+		attributes = Neos.Fusion:Attributes {
+			class.@process.addTableClasses = Neos.Fusion:Value {
+				classes = Neos.Fusion:RawArray {
+					0 = 'table'
+					1 = ${color != 'normal' ? 'table-' + color : null}
+					2 = Neos.Fusion:Case {
+						small {
+							condition = ${size == 'small'}
+							renderer = 'table-sm'
+						}
+					}
+					3 = ${bordered == true ? 'table-bordered' : null}
+					4 = ${hoverable == true ? 'table-hover' : null}
+					5 = ${responsive == true ? 'table-responsive' : null}
+				}
+
+				value = ${Array.concat(Type.isArray(value) ? value : [value], this.classes)}
+			}
+		}
+
+		head = ${head}
+
+		body = Neos.Fusion:Tag {
+			tagName = 'tbody'
+			content = ${body}
+		}
 	}
 }

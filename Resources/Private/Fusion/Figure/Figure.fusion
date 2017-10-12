@@ -1,24 +1,34 @@
-prototype(Futape.Bootstrap:Figure) < prototype(Neos.Neos:Content) {
-	templatePath = 'resource://Futape.Bootstrap/Private/Fusion/Figure/Figure.html'
-
-	attributes {
-		class.@process.addFigureClasses = ${Array.concat(Type.isArray(value) ? value : [value], ['figure'])}
-	}
-
+prototype(Futape.Bootstrap:Figure) < prototype(Neos.Fusion:Value) {
 	content = ${null}
-	content {
-		prototype(Futape.Bootstrap:Image) {
-			attributes {
-				class.@process.addFigureClasses = ${Array.concat(Type.isArray(value) ? value : [value], ['figure-img'])}
+	@context.content = ${this.content}
+
+	caption = ${null}
+	@context.caption = ${this.caption}
+
+	value = Neos.Fusion:Template {
+		templatePath = 'resource://Futape.Bootstrap/Private/Fusion/Figure/Figure.html'
+
+		attributes = Neos.Fusion:Attributes {
+			class.@process.addFigureClasses = ${Array.concat(Type.isArray(value) ? value : [value], ['figure'])}
+		}
+
+		content = ${content}
+		content {
+			prototype(Futape.Bootstrap:Image) {
+				value {
+					attributes {
+						class.@process.addFigureClasses = ${Array.concat(Type.isArray(value) ? value : [value], ['figure-img'])}
+					}
+				}
 			}
 		}
-	}
 
-	caption = Neos.Fusion:Tag {
-		tagName = 'figcaption'
-		attributes {
-			class.@process.addFigureClasses = ${Array.concat(Type.isArray(value) ? value : [value], ['figure-caption'])}
+		caption = Neos.Fusion:Tag {
+			tagName = 'figcaption'
+			attributes {
+				class.@process.addFigureClasses = ${Array.concat(Type.isArray(value) ? value : [value], ['figure-caption'])}
+			}
+			content = ${caption}
 		}
-		content = ${null}
 	}
 }

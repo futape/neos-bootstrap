@@ -1,25 +1,33 @@
-prototype(Futape.Bootstrap:Image) < prototype(Neos.Neos:Content) {
-	templatePath = 'resource://Futape.Bootstrap/Private/Fusion/Image/Image.html'
-
+prototype(Futape.Bootstrap:Image) < prototype(Neos.Fusion:Value) {
 	# Valid values: normal, thumbnail
 	style = 'normal'
 	@context.style = ${this.style}
 
-	attributes {
-		src = ${null}
-		alt = ${null}
-		class.@process.addImageClasses = Neos.Fusion:Value {
-			classes = Neos.Fusion:RawArray {
-				0 = 'img-fluid'
-				1 = Neos.Fusion:Case {
-					thumbnail {
-						condition = ${style == 'thumbnail'}
-						renderer = 'img-thumbnail'
+	src = ${null}
+	@context.src = ${this.src}
+
+	alt = ${null}
+	@context.alt = ${this.alt}
+
+	value = Neos.Fusion:Template {
+		templatePath = 'resource://Futape.Bootstrap/Private/Fusion/Image/Image.html'
+
+		attributes = Neos.Fusion:Attributes {
+			src = ${src}
+			alt = ${alt}
+			class.@process.addImageClasses = Neos.Fusion:Value {
+				classes = Neos.Fusion:RawArray {
+					0 = 'img-fluid'
+					1 = Neos.Fusion:Case {
+						thumbnail {
+							condition = ${style == 'thumbnail'}
+							renderer = 'img-thumbnail'
+						}
 					}
 				}
-			}
 
-			value = ${Array.concat(Type.isArray(value) ? value : [value], this.classes)}
+				value = ${Array.concat(Type.isArray(value) ? value : [value], this.classes)}
+			}
 		}
 	}
 }

@@ -1,22 +1,27 @@
-prototype(Futape.Bootstrap:TableRow) < prototype(Neos.Neos:Content) {
-	templatePath = 'resource://Futape.Bootstrap/Private/Fusion/Table/TableRow.html'
-
+prototype(Futape.Bootstrap:TableRow) < prototype(Neos.Fusion:Value) {
 	# Valid values: normal, active, primary, secondary, success,
 	# danger, warning, info, light, dark
 	color = 'normal'
 	@context.color = ${this.color}
 
-	attributes {
-		class.@process.addTableClasses = Neos.Fusion:Value {
-			classes = Neos.Fusion:RawArray {
-				0 = ${'table-' + color}
-			}
-
-			value = ${Array.concat(Type.isArray(value) ? value : [value], this.classes)}
-
-			@if.notNormal = ${color != 'normal'}
-		}
-	}
-
 	columns = ${null}
+	@context.columns = ${this.columns}
+
+	value = Neos.Fusion:Template {
+		templatePath = 'resource://Futape.Bootstrap/Private/Fusion/Table/TableRow.html'
+
+		attributes = Neos.Fusion:Attributes {
+			class.@process.addTableClasses = Neos.Fusion:Value {
+				classes = Neos.Fusion:RawArray {
+					0 = ${'table-' + color}
+				}
+
+				value = ${Array.concat(Type.isArray(value) ? value : [value], this.classes)}
+
+				@if.notNormal = ${color != 'normal'}
+			}
+		}
+
+		columns = ${columns}
+	}
 }

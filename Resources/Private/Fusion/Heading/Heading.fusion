@@ -1,15 +1,22 @@
-prototype(Futape.Bootstrap:Heading) < prototype(Neos.Neos:Content) {
-	templatePath = 'resource://Futape.Bootstrap/Private/Fusion/Heading/Heading.html'
-
+prototype(Futape.Bootstrap:Heading) < prototype(Neos.Fusion:Value) {
 	# Valid values: 1-6
 	level = ${null}
 	@context.level = ${this.level}
 
 	tagName = ${'h' + this.level}
-
-	attributes {
-		class.@process.addHeadingClasses = ${Array.concat(Type.isArray(value) ? value : [value], ['h' + level])}
-	}
+	@context.tagName = ${this.tagName}
 
 	content = ${null}
+	@context.content = ${this.content}
+
+	value = Neos.Fusion:Template {
+		templatePath = 'resource://Futape.Bootstrap/Private/Fusion/Heading/Heading.html'
+
+		attributes = Neos.Fusion:Attributes {
+			class.@process.addHeadingClasses = ${Array.concat(Type.isArray(value) ? value : [value], ['h' + level])}
+		}
+
+		tagName = ${tagName}
+		content = ${content}
+	}
 }
