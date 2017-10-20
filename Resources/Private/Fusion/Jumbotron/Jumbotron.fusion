@@ -1,0 +1,42 @@
+prototype(Futape.Bootstrap:Jumbotron) < prototype(Neos.Fusion:Value) {
+	fullWidth = false
+	@context.fullWidth = ${this.fullWidth}
+
+	fluid = false
+	@context.jumbotronFluid = ${this.fluid}
+
+	content = ${null}
+	@context.content = ${this.content}
+
+	value = Neos.Fusion:Template {
+		templatePath = 'resource://Futape.Bootstrap/Private/Fusion/Jumbotron/Jumbotron.html'
+
+		attributes = Neos.Fusion:Attributes {
+			class.@process.addJumbotronClasses = Neos.Fusion:Value {
+				classes = Neos.Fusion:RawArray {
+					0 = 'jumbotron'
+					1 = ${fullWidth == true ? 'jumbotron-fluid' : null}
+				}
+
+				value = ${Array.concat(Type.isArray(value) ? value : [value], this.classes)}
+			}
+		}
+
+		content = Neos.Fusion:Case {
+			fullWidth {
+				condition = ${fullWidth == true}
+				renderer = Futape.Bootstrap:Container {
+					fluid = ${jumbotronFluid}
+					content = ${content}
+				}
+			}
+
+			else {
+				condition = true
+				renderer = ${content}
+
+				@position = 'end'
+			}
+		}
+	}
+}
