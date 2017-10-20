@@ -1,0 +1,101 @@
+prototype(Futape.Bootstrap:Dropdown) < prototype(Neos.Fusion:Value) {
+	toggle = ${null}
+	@context.toggle = ${this.toggle}
+
+	content = ${null}
+	@context.content = ${this.content}
+
+	# Valid values: up, down
+	direction = 'down'
+	@context.direction = ${this.direction}
+
+	# Valid values: left, right
+	alignment = 'left'
+	@context.alignment = ${this.alignment}
+
+	value = Neos.Fusion:Template {
+		templatePath = 'resource://Futape.Bootstrap/Private/Fusion/Dropdown/Dropdown.html'
+
+		attributes = Neos.Fusion:Attributes {
+			class.@process.addDropdownClasses = Neos.Fusion:Value {
+				classes = Neos.Fusion:RawArray {
+					0 = Neos.Fusion:Case {
+						down {
+							condition = ${direction == 'down'}
+							renderer = 'dropdown'
+						}
+
+						up {
+							condition = ${direction == 'up'}
+							renderer = 'dropup'
+						}
+					}
+				}
+
+				value = ${Array.concat(Type.isArray(value) ? value : [value], this.classes)}
+			}
+		}
+
+		toggle = Neos.Fusion:Value {
+			value = ${toggle}
+
+			prototype(Futape.Bootstrap:Button) {
+				value {
+					attributes {
+						data-toggle = 'dropdown'
+						aria-haspopup = 'true'
+						aria-expanded = 'false'
+						class.@process.addDropdownClasses = Neos.Fusion:Value {
+							classes = Neos.Fusion:RawArray {
+								0 = 'dropdown-toggle'
+								1 = ${String.isBlank(content) == true ? 'dropdown-toggle-split' : null}
+							}
+
+							value = ${Array.concat(Type.isArray(value) ? value : [value], this.classes)}
+						}
+					}
+
+					content.@process.fallbackIfEmpty = Neos.Fusion:Case {
+						empty {
+							condition = ${String.isBlank(value) == true}
+							renderer = Neos.Fusion:Tag {
+								tagName = 'span'
+								attributes {
+									class = 'sr-only'
+								}
+								content = ${Translation.translate('Futape.Bootstrap:Dropdown:toggleFallbackLabel')}
+							}
+						}
+
+						else {
+							condition = true
+							renderer = ${value}
+
+							@position = 'end'
+						}
+					}
+				}
+			}
+		}
+
+		content = Neos.Fusion:Tag {
+			tagName = 'div'
+			attributes {
+				class.@process.addDropdownClasses = Neos.Fusion:Value {
+					classes = Neos.Fusion:RawArray {
+						0 = 'dropdown-menu'
+						1 = Neos.Fusion:Case {
+							right {
+								condition = ${alignment == 'right'}
+								renderer = 'dropdown-menu-right'
+							}
+						}
+					}
+
+					value = ${Array.concat(Type.isArray(value) ? value : [value], this.classes)}
+				}
+			}
+			content = ${content}
+		}
+	}
+}

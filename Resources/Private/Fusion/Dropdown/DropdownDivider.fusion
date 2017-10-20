@@ -1,0 +1,9 @@
+prototype(Futape.Bootstrap:DropdownDivider) < prototype(Neos.Fusion:Value) {
+	value = Neos.Fusion:Template {
+		templatePath = 'resource://Futape.Bootstrap/Private/Fusion/Dropdown/DropdownDivider.html'
+
+		attributes = Neos.Fusion:Attributes {
+			class.@process.addDropdownClasses = ${Array.concat(Type.isArray(value) ? value : [value], ['dropdown-divider'])}
+		}
+	}
+}

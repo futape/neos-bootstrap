@@ -1,0 +1,7 @@
+prototype(Futape.Bootstrap:DropdownItem) < prototype(Futape.Bootstrap:AbstractButton) {
+	value {
+		attributes {
+			class.@process.addDropdownClasses = ${Array.concat(Type.isArray(value) ? value : [value], ['dropdown-item'])}
+		}
+	}
+}

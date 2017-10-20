@@ -1,0 +1,14 @@
+prototype(Futape.Bootstrap:DropdownHeader) < prototype(Neos.Fusion:Value) {
+	content = ${null}
+	@context.content = ${this.content}
+
+	value = Neos.Fusion:Template {
+		templatePath = 'resource://Futape.Bootstrap/Private/Fusion/Dropdown/DropdownHeader.html'
+
+		attributes = Neos.Fusion:Attributes {
+			class.@process.addDropdownClasses = ${Array.concat(Type.isArray(value) ? value : [value], ['dropdown-header'])}
+		}
+
+		content = ${content}
+	}
+}
