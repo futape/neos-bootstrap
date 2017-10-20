@@ -1,0 +1,26 @@
+prototype(Futape.Bootstrap:ListGroupItem) < prototype(Futape.Bootstrap:AbstractButton) {
+	# Valid values: normal, primary, secondary, success,
+	# danger, warning, info, light, dark
+	color = 'normal'
+	@context.color = ${this.color}
+
+	actionable = true
+	@context.actionable = ${this.actionable}
+
+	href.@process.disableIfNotActionable = ${this.actionable == false ? null : value}
+	tagName.@process.liIfNotActionable = ${this.actionable == false ? 'li' : value}
+
+	value {
+		attributes {
+			class.@process.addListGroupClasses = Neos.Fusion:Value {
+				classes = Neos.Fusion:RawArray {
+					0 = 'list-group-item'
+					1 = ${color != 'normal' ? 'list-group-item-' + color : null}
+					2 = ${actionable == true ? 'list-group-item-action' : null}
+				}
+
+				value = ${Array.concat(Type.isArray(value) ? value : [value], this.classes)}
+			}
+		}
+	}
+}

@@ -1,0 +1,28 @@
+prototype(Futape.Bootstrap:ListGroup) < prototype(Neos.Fusion:Value) {
+	actionable = false
+	@context.listGroupActionable = ${this.actionable}
+
+	tagName = ${this.actionable == true ? 'div' : 'ul'}
+	@context.tagName = ${this.tagName}
+
+	content = ${null}
+	@context.content = ${this.content}
+
+	value = Neos.Fusion:Template {
+		templatePath = 'resource://Futape.Bootstrap/Private/Fusion/ListGroup/ListGroup.html'
+
+		attributes = Neos.Fusion:Attributes {
+			class.@process.addListGroupClasses = ${Array.concat(Type.isArray(value) ? value : [value], ['list-group'])}
+		}
+
+		tagName = ${tagName}
+
+		content = Neos.Fusion:Value {
+			value = ${content}
+
+			prototype(Futape.Bootstrap:ListGroupItem) {
+				actionable = ${listGroupActionable}
+			}
+		}
+	}
+}
