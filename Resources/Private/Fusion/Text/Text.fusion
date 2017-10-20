@@ -1,0 +1,29 @@
+prototype(Futape.Bootstrap:Text) < prototype(Neos.Fusion:Value) {
+	# Valid values: normal, lead
+	style = 'normal'
+	@context.style = ${this.style}
+
+	content = ${null}
+	@context.content = ${this.content}
+
+	value = Neos.Fusion:Template {
+		templatePath = 'resource://Futape.Bootstrap/Private/Fusion/Text/Text.html'
+
+		attributes = Neos.Fusion:Attributes {
+			class.@process.addTextClasses = Neos.Fusion:Value {
+				classes = Neos.Fusion:Case {
+					lead {
+						condition = ${q(node).property('style') == 'lead'}
+						renderer = ${['lead']}
+					}
+				}
+
+				value = ${Array.concat(Type.isArray(value) ? value : [value], this.classes)}
+
+				@if.notNormal = ${style != 'normal'}
+			}
+		}
+
+		content = ${content}
+	}
+}
