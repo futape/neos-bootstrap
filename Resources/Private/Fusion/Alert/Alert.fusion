@@ -1,0 +1,58 @@
+prototype(Futape.Bootstrap:Alert) < prototype(Neos.Fusion:Value) {
+	# Valid values: primary, secondary, success,
+	# danger, warning, info, light, dark
+	color = ${null}
+	@context.color = ${this.color}
+
+	dismissible = false
+	@context.dismissible = ${this.dismissible}
+
+	content = ${null}
+	@context.content = ${this.content}
+
+	value = Neos.Fusion:Template {
+		templatePath = 'resource://Futape.Bootstrap/Private/Fusion/Alert/Alert.html'
+
+		attributes = Neos.Fusion:Attributes {
+			class.@process.addAlertClasses = Neos.Fusion:Value {
+				classes = Neos.Fusion:RawArray {
+					0 = 'alert'
+					1 = ${'alert-' + color}
+					2 = ${dismissible == true ? 'alert-dismissible fade show' : null}
+				}
+
+				value = ${Array.concat(Type.isArray(value) ? value : [value], this.classes)}
+			}
+		}
+
+		content = Neos.Fusion:Value {
+			value = ${content}
+
+			prototype(Futape.Bootstrap:Heading) {
+				value {
+					attributes {
+						class.@process.addAlertClasses = ${Array.concat(Type.isArray(value) ? value : [value], ['alert-heading'])}
+					}
+				}
+			}
+
+			prototype(Futape.Bootstrap:DisplayHeading) {
+				value {
+					attributes {
+						class.@process.addAlertClasses = ${Array.concat(Type.isArray(value) ? value : [value], ['alert-heading'])}
+					}
+				}
+			}
+		}
+
+		close = Futape.Bootstrap:Close {
+			value {
+				attributes {
+					data-dismiss = 'alert'
+				}
+			}
+
+			@if.dismissible = ${dismissible == true}
+		}
+	}
+}

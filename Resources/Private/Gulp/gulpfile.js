@@ -52,6 +52,8 @@ config.src.js = [
 	path.join(config.dir.bootstrap.js, 'tooltip.js'),
 	path.join(config.dir.bootstrap.js, 'popover.js'),
 	'../Javascript/Futape/bootstrapFooter.js',
+	'../Javascript/Futape/onLoaded.js',
+	'../Fusion/Alert/alert.js'
 ];
 
 // CSS tasks
