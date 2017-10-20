@@ -1,0 +1,40 @@
+prototype(Futape.Bootstrap:AbstractButton) < prototype(Neos.Fusion:Value) {
+	content = ${null}
+	@context.content = ${this.content}
+
+	href = ${null}
+	@context.href = ${this.href}
+
+	tagName = ${this.href != null ? 'a' : 'button'}
+	@context.tagName = ${this.tagName}
+
+	disabled = false
+	@context.diabled = ${this.disabled}
+
+	active = false
+	@context.active = ${this.active}
+
+	value = Neos.Fusion:Template {
+		templatePath = 'resource://Futape.Bootstrap/Private/Fusion/AbstractButton/AbstractButton.html'
+
+		attributes = Neos.Fusion:Attributes {
+			type = ${tagName == 'button' ? 'button' : null}
+			href = ${href}
+			aria-disabled = ${(disabled == true && tagName == 'a') ? 'true' : null}
+			tabindex = ${(disabled == true && tagName == 'a') ? -1 : null}
+			disabled = ${(disabled == true && tagName != 'a') ? true : null}
+			aria-pressed = ${active == true ? 'true' : null}
+			class.@process.addAbstractButtonClasses = Neos.Fusion:Value {
+				classes = Neos.Fusion:RawArray {
+					0 = ${(disabled == true && tagName == 'a') ? 'disabled' : null}
+					1 = ${active == true ? 'active' : null}
+				}
+
+				value = ${Array.concat(Type.isArray(value) ? value : [value], this.classes)}
+			}
+		}
+
+		tagName = ${tagName}
+		content = ${content}
+	}
+}
