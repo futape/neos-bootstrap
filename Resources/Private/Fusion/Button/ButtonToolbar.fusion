@@ -1,0 +1,15 @@
+prototype(Futape.Bootstrap:ButtonToolbar) < prototype(Neos.Fusion:Value) {
+	content = ${null}
+	@context.content = ${this.content}
+
+	value = Neos.Fusion:Template {
+		templatePath = 'resource://Futape.Bootstrap/Private/Fusion/Button/ButtonToolbar.html'
+
+		attributes = Neos.Fusion:Attributes {
+			role = 'toolbar'
+			class.@process.addButtonClasses = ${Array.concat(Type.isArray(value) ? value : [value], ['btn-toolbar'])}
+		}
+
+		content = ${content}
+	}
+}

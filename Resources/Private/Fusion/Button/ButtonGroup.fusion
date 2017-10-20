@@ -1,0 +1,83 @@
+prototype(Futape.Bootstrap:ButtonGroup) < prototype(Neos.Fusion:Value) {
+	# Valid values: normal, small, large
+	size = 'normal'
+	@context.size = ${this.size}
+	@context.buttonGroupSize = ${this.size}
+
+	vertical = false
+	@context.vertical = ${this.vertical}
+
+	content = ${null}
+	@context.content = ${this.content}
+
+	toggleable = false
+	@context.toggleable = ${this.toggleable}
+	@context.buttonGroupToggleable = ${this.toggleable}
+
+	value = Neos.Fusion:Template {
+		templatePath = 'resource://Futape.Bootstrap/Private/Fusion/Button/ButtonGroup.html'
+
+		attributes = Neos.Fusion:Attributes {
+			role = 'group'
+			data-toggle = ${toggleable == true ? 'buttons' : null}
+			class.@process.addButtonClasses = Neos.Fusion:Value {
+				classes = Neos.Fusion:RawArray {
+					0 = ${'btn-group' + (vertical == true ? '-vertical' : '')}
+					1 = Neos.Fusion:Case {
+						small {
+							condition = ${size == 'small'}
+							renderer = 'btn-group-sm'
+						}
+
+						large {
+							condition = ${size == 'large'}
+							renderer = 'btn-group-lg'
+						}
+					}
+				}
+
+				value = ${Array.concat(Type.isArray(value) ? value : [value], this.classes)}
+			}
+		}
+
+		content = ${content}
+		content {
+			prototype(Futape.Bootstrap:Dropdown) {
+				value {
+					attributes {
+						role = 'group'
+						class.@process.addButtonClasses {
+							classes = Neos.Fusion:RawArray {
+								0 = 'btn-group'
+								1 = Neos.Fusion:Case {
+									small {
+										condition = ${size == 'small'}
+										renderer = 'btn-group-sm'
+									}
+
+									large {
+										condition = ${size == 'large'}
+										renderer = 'btn-group-lg'
+									}
+								}
+							}
+							expression = ${Array.concat(Type.isArray(value) ? value : [value], this.classes)}
+						}
+					}
+				}
+			}
+
+			prototype(Futape.Bootstrap:ButtonGroup) {
+				size = ${buttonGroupSize}
+				vertical = false
+				toggleable = false
+			}
+
+			prototype(Futape.Bootstrap:Button) {
+				size = 'normal'
+				block = false
+				toggleable.@process.inheritFromButtonGroup = ${buttonGroupToggleable == true ? false : value}
+			}
+		}
+	}
+}
