@@ -1,0 +1,40 @@
+prototype(Futape.Bootstrap:CardBody) < prototype(Neos.Fusion:Value) {
+	content = ${null}
+	@context.content = ${this.content}
+
+	value = Neos.Fusion:Template {
+		templatePath = 'resource://Futape.Bootstrap/Private/Fusion/Card/CardBody.html'
+
+		attributes = Neos.Fusion:Attributes {
+			class.@process.addCardClasses = ${Array.concat(Type.isArray(value) ? value : [value], ['card-body'])}
+		}
+
+		content = Neos.Fusion:Value {
+			value = ${content}
+
+			prototype(Futape.Bootstrap:Text) {
+				value {
+					attributes {
+						class.@process.addCardClasses = ${Array.concat(Type.isArray(value) ? value : [value], ['card-text'])}
+					}
+				}
+			}
+
+			prototype(Futape.Bootstrap:DisplayHeading) {
+				value {
+					attributes {
+						class.@process.addCardClasses = ${Array.concat(Type.isArray(value) ? value : [value], ['card-title'])}
+					}
+				}
+			}
+
+			prototype(Futape.Bootstrap:Heading) {
+				value {
+					attributes {
+						class.@process.addCardClasses = ${Array.concat(Type.isArray(value) ? value : [value], ['card-title'])}
+					}
+				}
+			}
+		}
+	}
+}

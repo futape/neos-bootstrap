@@ -1,0 +1,14 @@
+prototype(Futape.Bootstrap:CardHeader) < prototype(Neos.Fusion:Value) {
+	content = ${null}
+	@context.content = ${this.content}
+
+	value = Neos.Fusion:Template {
+		templatePath = 'resource://Futape.Bootstrap/Private/Fusion/Card/CardHeader.html'
+
+		attributes = Neos.Fusion:Attributes {
+			class.@process.addCardClasses = ${Array.concat(Type.isArray(value) ? value : [value], ['card-header'])}
+		}
+
+		content = ${content}
+	}
+}

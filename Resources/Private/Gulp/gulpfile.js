@@ -53,7 +53,8 @@ config.src.js = [
 	path.join(config.dir.bootstrap.js, 'popover.js'),
 	'../Javascript/Futape/bootstrapFooter.js',
 	'../Javascript/Futape/onLoaded.js',
-	'../Fusion/Alert/alert.js'
+	'../Fusion/Alert/alert.js',
+	'../Fusion/Card/card.js'
 ];
 
 // CSS tasks

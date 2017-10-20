@@ -1,0 +1,70 @@
+prototype(Futape.Bootstrap:Card) < prototype(Neos.Fusion:Value) {
+	content = ${null}
+	@context.content = ${this.content}
+
+	# Valid values: Futape.Bootstrap:CardHeader, Futape.Bootstrap:Image
+	header = ${null}
+	@context.header = ${this.header}
+
+	# Valid values: Futape.Bootstrap:CardFooter, Futape.Bootstrap:Image
+	footer = ${null}
+	@context.footer = ${this.footer}
+
+	value = Neos.Fusion:Template {
+		templatePath = 'resource://Futape.Bootstrap/Private/Fusion/Card/Card.html'
+
+		attributes = Neos.Fusion:Attributes {
+			class.@process.addCardClasses = ${Array.concat(Type.isArray(value) ? value : [value], ['card'])}
+		}
+
+		content = Neos.Fusion:Value {
+			value = ${content}
+
+			prototype(Futape.Bootstrap:Image) {
+				value {
+					attributes {
+						class.@process.addCardClasses = Neos.Fusion:Value {
+							classes = Neos.Fusion:RawArray {
+								0 = 'card-img'
+								1 = 'rounded-0'
+							}
+							value = ${Array.concat(Type.isArray(value) ? value : [value], this.classes)}
+						}
+					}
+				}
+			}
+
+			prototype(Futape.Bootstrap:ListGroup) {
+				value {
+					attributes {
+						class.@process.addCardClasses = ${Array.concat(Type.isArray(value) ? value : [value], ['list-group-flush'])}
+					}
+				}
+			}
+		}
+
+		header = Neos.Fusion:Value {
+			value = ${header}
+
+			prototype(Futape.Bootstrap:Image) {
+				value {
+					attributes {
+						class.@process.addCardClasses = ${Array.concat(Type.isArray(value) ? value : [value], ['card-img-top'])}
+					}
+				}
+			}
+		}
+
+		footer = Neos.Fusion:Value {
+			value = ${footer}
+
+			prototype(Futape.Bootstrap:Image) {
+				value {
+					attributes {
+						class.@process.addCardClasses = ${Array.concat(Type.isArray(value) ? value : [value], ['card-img-bottom'])}
+					}
+				}
+			}
+		}
+	}
+}
