@@ -1,0 +1,49 @@
+prototype(Futape.Bootstrap:BreadcumbItem) < prototype(Neos.Fusion:Value) {
+	active = false
+	@context.active = ${this.active}
+
+	content = ${null}
+	@context.content = ${this.content}
+
+	node = ${null}
+	@context.node = ${this.node}
+
+	href = Neos.Neos:NodeUri {
+		node = ${node}
+	}
+	@context.href = ${this.href}
+
+	value = Neos.Fusion:Template {
+		templatePath = 'resource://Futape.Bootstrap/Private/Fusion/Breadcrumb/BreadcumbItem.html'
+
+		attributes = Neos.Fusion:Attributes {
+			class.@process.addBreadcrumbClasses = Neos.Fusion:Value {
+				classes = Neos.Fusion:RawArray {
+					0 = 'breadcrumb-item'
+					1 = ${active == true ? 'active' : null}
+				}
+				value = ${Array.concat(Type.isArray(value) ? value : [value], this.classes)}
+			}
+		}
+
+		content = Neos.Fusion:Case {
+			active {
+				condition = ${active == true}
+				renderer = ${content}
+			}
+
+			else {
+				condition = true
+				renderer = Neos.Fusion:Tag {
+					tagName = 'a'
+					attributes {
+						href = ${href}
+					}
+					content = ${content}
+				}
+
+				@position = 'end'
+			}
+		}
+	}
+}

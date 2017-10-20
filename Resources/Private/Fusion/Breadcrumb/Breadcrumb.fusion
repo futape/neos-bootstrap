@@ -1,0 +1,21 @@
+prototype(Futape.Bootstrap:Breadcrumb) < prototype(Neos.Fusion:Value) {
+	value = Neos.Neos:BreadcrumbMenu {
+		templatePath = 'resource://Futape.Bootstrap/Private/Fusion/Breadcrumb/Breadcrumb.html'
+
+		attributes {
+			class >
+			class.@process.addBreadcrumbClasses = ${Array.concat(Type.isArray(value) ? value : [value], ['breadcrumb'])}
+		}
+
+		@context.items = ${this.items}
+
+		breadcrumbItems = Neos.Fusion:Collection {
+			collection = ${items}
+			itemRenderer = Futape.Bootstrap:BreadcumbItem {
+				active = ${item.state == 'current'}
+				content = ${item.label}
+				node = ${item.node}
+			}
+		}
+	}
+}
