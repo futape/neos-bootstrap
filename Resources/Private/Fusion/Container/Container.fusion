@@ -1,0 +1,17 @@
+prototype(Futape.Bootstrap:Container) < prototype(Neos.Fusion:Value) {
+	fluid = false
+	@context.fluid = ${this.fluid}
+
+	content = ${null}
+	@context.content = ${this.content}
+
+	value = Neos.Fusion:Template {
+		templatePath = 'resource://Futape.Bootstrap/Private/Fusion/Container/Container.html'
+
+		attributes = Neos.Fusion:Attributes {
+			class.@process.addContainerClasses = ${Array.concat(Type.isArray(value) ? value : [value], ['container' + (fluid == true ? '-fluid' : '')])}
+		}
+
+		content = ${content}
+	}
+}
