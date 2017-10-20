@@ -1,0 +1,46 @@
+prototype(Futape.Bootstrap:Button) < prototype(Futape.Bootstrap:AbstractButton) {
+	# Valid values: primary, secondary, success,
+	# danger, warning, info, light, dark, link
+	color = ${null}
+	@context.color = ${this.color}
+
+	outline = false
+	outline.@process.disableIfLink = ${this.color == 'link' ? false : value}
+	@context.outline = ${this.outline}
+
+	# Valid values: normal, small, large
+	size = 'normal'
+	@context.size = ${this.size}
+
+	block = false
+	@context.block = ${this.block}
+
+	toggleable = false
+	@context.toggleable = ${this.toggleable}
+
+	value {
+		attributes {
+			data-toggle = ${toggleable == true ? 'button' : null}
+			class.@process.addButtonClasses = Neos.Fusion:Value {
+				classes = Neos.Fusion:RawArray {
+					0 = 'btn'
+					1 = ${'btn-' + (outline == true ? 'outline-' : '') + color}
+					2 = Neos.Fusion:Case {
+						small {
+							condition = ${size == 'small'}
+							renderer = 'btn-sm'
+						}
+
+						large {
+							condition = ${size == 'large'}
+							renderer = 'btn-lg'
+						}
+					}
+					3 = ${block == true ? 'btn-block' : null}
+				}
+
+				value = ${Array.concat(Type.isArray(value) ? value : [value], this.classes)}
+			}
+		}
+	}
+}
