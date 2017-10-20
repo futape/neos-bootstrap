@@ -3,3 +3,9 @@ Neos:
     fusion:
       autoInclude:
         Futape.Bootstrap: true
+    userInterface:
+      translation:
+        autoInclude:
+          Futape.Bootstrap:
+            - '**/*'
+

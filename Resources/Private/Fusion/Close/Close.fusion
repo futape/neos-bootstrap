@@ -1,0 +1,22 @@
+prototype(Futape.Bootstrap:Close) < prototype(Neos.Fusion:Value) {
+	label = ${Translation.translate('Futape.Bootstrap:Close:label')}
+	@context.label = ${this.label}
+
+	value = Neos.Fusion:Template {
+		templatePath = 'resource://Futape.Bootstrap/Private/Fusion/Close/Close.html'
+
+		attributes = Neos.Fusion:Attributes {
+			type = 'button'
+			aria-label = ${label}
+			class.@process.addCloseClasses = ${Array.concat(Type.isArray(value) ? value : [value], ['close'])}
+		}
+
+		content = Neos.Fusion:Tag {
+			tagName = 'span'
+			attributes {
+				aria-hidden = 'true'
+			}
+			content = '&times;'
+		}
+	}
+}
