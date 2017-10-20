@@ -1,0 +1,44 @@
+prototype(Futape.Bootstrap:Badge) < prototype(Neos.Fusion:Value) {
+	# Valid values: primary, secondary, success,
+	# danger, warning, info, light, dark
+	color = ${null}
+	@context.color = ${this.color}
+
+	# Valid values: normal, pill
+	style = 'normal'
+	@context.style = ${this.style}
+
+	content = ${null}
+	@context.content = ${this.content}
+
+	href = ${null}
+	@context.href = ${this.href}
+
+	tagName = ${this.href != null ? 'a' : 'span'}
+	@context.tagName = ${this.tagName}
+
+	value = Neos.Fusion:Template {
+		templatePath = 'resource://Futape.Bootstrap/Private/Fusion/Badge/Badge.html'
+
+		attributes = Neos.Fusion:Attributes {
+			href = ${href}
+			class.@process.addBadgeClasses = Neos.Fusion:Value {
+				classes = Neos.Fusion:RawArray {
+					0 = 'badge'
+					1 = ${'badge-' + color}
+					2 = Neos.Fusion:Case {
+						pill {
+							condition = ${style == 'pill'}
+							renderer = 'badge-pill'
+						}
+					}
+				}
+
+				value = ${Array.concat(Type.isArray(value) ? value : [value], this.classes)}
+			}
+		}
+
+		tagName = ${tagName}
+		content = ${content}
+	}
+}
