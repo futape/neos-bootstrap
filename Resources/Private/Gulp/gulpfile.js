@@ -185,7 +185,7 @@ gulp.task('babel:dev', ['concat:dev'], function(cb) {
 	], cb);
 });
 
-gulp.task('uglify:prod', ['concat:prod'], function(cb) {
+gulp.task('uglify:prod', ['babel:prod'], function(cb) {
 	pump([
 		gulp.src(path.join(config.dest.js.dir, '*.js')),
 		uglify({
