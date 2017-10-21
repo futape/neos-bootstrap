@@ -19,7 +19,7 @@ prototype(Futape.Bootstrap:Table) < prototype(Neos.Fusion:Value) {
 	head = Futape.Bootstrap:TableHead
 	@context.head = ${this.head}
 
-	body = ${null}
+	body = Futape.Bootstrap:TableBody
 	@context.body = ${this.body}
 
 	value = Neos.Fusion:Template {
@@ -46,10 +46,6 @@ prototype(Futape.Bootstrap:Table) < prototype(Neos.Fusion:Value) {
 		}
 
 		head = ${head}
-
-		body = Neos.Fusion:Tag {
-			tagName = 'tbody'
-			content = ${body}
-		}
+		body = ${body}
 	}
 }

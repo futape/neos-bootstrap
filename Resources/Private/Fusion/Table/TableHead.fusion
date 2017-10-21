@@ -20,10 +20,15 @@ prototype(Futape.Bootstrap:TableHead) < prototype(Neos.Fusion:Value) {
 			}
 		}
 
-		content = ${content}
-		content {
+		content = Neos.Fusion:Value {
+			value = ${content}
+
 			prototype(Futape.Bootstrap:TableCell) {
-				tagName.@process.makeTableHeader = 'th'
+				tagName.@process.makeTh {
+					expression = 'th'
+
+					@position = 'end'
+				}
 			}
 		}
 	}

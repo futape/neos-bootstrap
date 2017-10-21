@@ -1,0 +1,9 @@
+prototype(Futape.Bootstrap:TableBody) < prototype(Neos.Fusion:Value) {
+	content = ${null}
+	@context.content = ${this.content}
+
+	value = Neos.Fusion:Tag {
+		tagName = 'tbody'
+		content = ${content}
+	}
+}
